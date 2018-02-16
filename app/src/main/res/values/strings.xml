@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">GetirAndroid</string>
     <string name="currentOrder">Current Orders</string>
+    <string name="availableCourier">Avaılable Couriers</string>
 </resources>

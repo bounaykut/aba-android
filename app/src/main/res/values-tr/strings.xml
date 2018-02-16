@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GetirAndroid</string>
+    <string name="currentOrder">Mevcut Siparişlerim</string>
+    <string name="availableCourier">Müsait Kuryeler</string>
+</resources>
