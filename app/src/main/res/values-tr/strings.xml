@@ -2,4 +2,8 @@
     <string name="app_name">GetirAndroid</string>
     <string name="currentOrder">Mevcut Siparişlerim</string>
     <string name="availableCourier">Müsait Kuryeler</string>
+    <string name="giveOrder"><u>Sipariş Ver:</u></string>
+    <string name="from">Nereden:</string>
+    <string name="location">Yer:</string>
+
 </resources>

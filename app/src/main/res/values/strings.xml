@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">GetirAndroid</string>
     <string name="currentOrder">Current Orders</string>
-    <string name="availableCourier">Avaılable Couriers</string>
+    <string name="availableCourier">Available Couriers</string>
+    <string name="giveOrder"><u>Give Order:</u></string>
+    <string name="from">From where:</string>
+    <string name="location">Location:</string>
 </resources>
