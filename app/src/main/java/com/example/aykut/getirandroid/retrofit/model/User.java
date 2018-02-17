@@ -1,6 +1,5 @@
 package com.example.aykut.getirandroid.retrofit.model;
 
-import android.location.Location;
 
 import com.google.gson.annotations.SerializedName;
 

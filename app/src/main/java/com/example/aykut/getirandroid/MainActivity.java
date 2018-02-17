@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Movie;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -21,6 +22,9 @@ import android.widget.ImageButton;
 import com.example.aykut.getirandroid.activities.AvailableCourier;
 import com.example.aykut.getirandroid.activities.GiveOrder;
 import com.example.aykut.getirandroid.activities.GoMyOrdersActivity;
+import com.example.aykut.getirandroid.retrofit.model.Courier;
+import com.example.aykut.getirandroid.retrofit.rest.ApiClient;
+import com.example.aykut.getirandroid.retrofit.rest.ApiInterface;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,6 +39,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -86,6 +95,24 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<Courier>> call = apiService.getAllCouriersSortedByDate();
+
+        call.enqueue(new Callback<List<Courier>>() {
+            @Override
+            public void onResponse(Call<List<Courier>>call, Response<List<Courier>> response) {
+                List<Courier> couriers = response.body();
+                Log.d("aykut", "Number of couriers received: " + couriers.size());
+            }
+
+            @Override
+            public void onFailure(Call<List<Courier>>call, Throwable t) {
+                // Log error here since request failed
+                Log.e("aykut", t.toString());
+            }
+        });
 
 
     }

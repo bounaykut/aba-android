@@ -9,6 +9,7 @@ package com.example.aykut.getirandroid.retrofit.rest;
 import android.location.Location;
 
 import com.example.aykut.getirandroid.retrofit.model.Courier;
+import com.example.aykut.getirandroid.retrofit.model.Order;
 
 import java.util.List;
 
@@ -17,7 +18,6 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 
 public interface ApiInterface {
@@ -33,5 +33,11 @@ public interface ApiInterface {
     Call<List<Courier>> getCouriersAroundPoint(@Path("id") int id, @Body Location location);
 
     //order routes
+    @GET("orders/")
+    Call<List<Order>> getCurrentOrders();
+
+    @POST("orders/createOrder")
+    Call<Order> createOrder(@Body Order order);
+
 
 }
