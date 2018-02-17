@@ -5,4 +5,7 @@
     <string name="giveOrder"><u>Give Order:</u></string>
     <string name="from">From where:</string>
     <string name="location">Location:</string>
+    <string name="order">Siparis Et</string>
+    <string name="assignee">Assignee:</string>
+    <string name="kiloLimit">Kilo Limit:</string>
 </resources>

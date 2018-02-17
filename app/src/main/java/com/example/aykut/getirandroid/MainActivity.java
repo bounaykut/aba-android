@@ -115,10 +115,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker) {
 
-       /* Intent intent = new Intent();
+        Intent intent = new Intent(this,GiveOrder.class);
         //create mymarker class extending marker and add id field to it
         intent.putExtra("travellerId",1);
-        startActivity(intent);*/
+        startActivity(intent);
 
 
         return false;

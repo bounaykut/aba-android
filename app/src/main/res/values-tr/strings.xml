@@ -5,5 +5,7 @@
     <string name="giveOrder"><u>Sipariş Ver:</u></string>
     <string name="from">Nereden:</string>
     <string name="location">Yer:</string>
-
+    <string name="order">Order</string>
+    <string name="assignee">Alıcı:</string>
+    <string name="kiloLimit">Kilo Limit:</string>
 </resources>

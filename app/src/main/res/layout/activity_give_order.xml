@@ -6,4 +6,85 @@
     android:layout_height="match_parent"
     tools:context="com.example.aykut.getirandroid.GiveOrder">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/basketTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/order"
+            android:textColor="@color/colorBlack"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/travellerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/basketTextView"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/assignee"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/basketTextView"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@id/travellerName"
+            android:layout_marginTop="20dp"
+            android:text="Noname" />
+
+
+        <TextView
+            android:id="@+id/kiloLimitTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/travellerName"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="@string/kiloLimit" />
+
+        <TextView
+            android:id="@+id/kiloLimit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/travellerName"
+            android:layout_toEndOf="@+id/kiloLimitTextView"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="0" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addItemButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
+            android:clickable="true"
+            android:src="@android:drawable/ic_input_add"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/itemList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/kiloLimitTextView">
+        </android.support.v7.widget.RecyclerView>
+
+
+
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
