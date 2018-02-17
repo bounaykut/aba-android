@@ -1,15 +1,28 @@
 package com.example.aykut.getirandroid;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.example.aykut.getirandroid.activities.AvailableCourier;
 import com.example.aykut.getirandroid.activities.GiveOrder;
+import com.example.aykut.getirandroid.activities.GoMyOrdersActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -19,6 +32,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 
@@ -32,6 +46,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private ArrayList<Marker> markerInCircle = new ArrayList<>();
 
+    LatLng lastKnownPoint;
 
 
     @Override
@@ -39,17 +54,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-
         currentOrder = (Button) findViewById(R.id.currentOrdersButton);
         currentOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent i = new Intent(MainActivity.this, GoMyOrdersActivity.class);
+                startActivity(i);
             }
         });
 
@@ -57,7 +67,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         availableCourier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent i = new Intent(MainActivity.this, AvailableCourier.class);
+                startActivity(i);
             }
         });
 
@@ -71,6 +82,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+
     }
 
 
@@ -78,44 +95,59 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney, Australia, and move the camera.
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
+        if (lastKnownPoint == null) {
+            Log.d("aykut", "noooo");
+            lastKnownPoint = new LatLng(41, 28);
+        } else {
+            Log.d("aykut", lastKnownPoint.toString());
+        }
 
+        //add marker to your last known location and move camera there
+        Marker m = mMap.addMarker(new MarkerOptions().position(lastKnownPoint)
+                .icon(BitmapDescriptorFactory.fromResource(android.R.drawable.ic_menu_mylocation))
+                .title("Me"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(lastKnownPoint));
+
+        //set marker click listener
         mMap.setOnMarkerClickListener(this);
 
+        //set map click listener
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
             @Override
             public void onMapClick(LatLng point) {
 
+                //clear map first
                 mMap.clear();
 
+                //add marker to clicked center position
                 Marker m = mMap.addMarker(new MarkerOptions().position(point)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_package))
                         .title("Order Location")
                         .snippet("order center point"));
                 markerInCircle.add(m);
 
+                //move camera to clicked point
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(5.0f));
+
+                //draw blue circle centered at the clicked point
                 drawCircle(point);
 
 
-                //post the clicked point to backend and get points around radius with traveller infos(id,name), when click on marker
-                // go to traveller order screen, start activity and send id of clicked traveller with the intent bundle
+                //add markers to points around the center point
                 ArrayList<LatLng> pointsInCircle = new ArrayList<>();
                 pointsInCircle.add(new LatLng(-33, 152));//test data
                 pointsInCircle.add(new LatLng(-32, 152));
                 pointsInCircle.add(new LatLng(-33, 150));
-                for(LatLng latlng : pointsInCircle){
+                for (LatLng latlng : pointsInCircle) {
                     mMap.addMarker(new MarkerOptions().position(latlng)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map))
                             .snippet("Ali Armagan"));
                 }
 
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
-                mMap.animateCamera( CameraUpdateFactory.zoomTo( 5.0f ) );
+
             }
         });
     }
@@ -123,9 +155,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker) {
 
-        Intent intent = new Intent(this,GiveOrder.class);
+        //go to courier's order page
+        Intent intent = new Intent(this, GiveOrder.class);
         //create mymarker class extending marker and add id field to it
-        intent.putExtra("travellerId",1);
+        intent.putExtra("travellerId", 1);
         startActivity(intent);
 
 
@@ -133,7 +166,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    private void drawCircle(LatLng point){
+    private void drawCircle(LatLng point) {
 
         // Instantiating CircleOptions to draw a circle around the marker
         CircleOptions circleOptions = new CircleOptions();

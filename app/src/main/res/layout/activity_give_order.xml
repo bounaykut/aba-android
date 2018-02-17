@@ -63,17 +63,6 @@
             android:layout_marginLeft="10dp"
             android:text="0" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/addItemButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/itemList"
-            android:layout_centerHorizontal="true"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="30dp"
-            android:clickable="true"
-            android:src="@android:drawable/ic_input_add"
-            />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/itemList"
@@ -82,7 +71,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:layout_below="@id/kiloLimitTextView">
+            android:layout_above="@+id/orderButton"
+            android:layout_below="@id/autoCompleteTextView">
 
         </android.support.v7.widget.RecyclerView>
 
@@ -93,6 +83,31 @@
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:text="@string/order" />
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search item"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@layout/edit_text_border"
+            android:layout_below="@+id/kiloLimitTextView"
+            />
+
+        <ImageButton
+            android:id="@+id/searchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/autoCompleteTextView"
+            android:layout_alignBottom="@+id/autoCompleteTextView"
+            android:layout_alignRight="@+id/autoCompleteTextView"
+            android:src="@android:drawable/ic_menu_search"
+            android:background="@android:color/darker_gray"
+            android:padding="2dp"
+            android:text="search"/>
 
 
     </RelativeLayout>
