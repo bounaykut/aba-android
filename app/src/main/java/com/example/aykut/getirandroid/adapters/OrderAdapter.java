@@ -1,12 +1,13 @@
-package com.example.aykut.getirandroid;
+package com.example.aykut.getirandroid.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
 import android.widget.TextView;
 
+import com.example.aykut.getirandroid.R;
+import com.example.aykut.getirandroid.models.Order;
 import com.shalan.mohamed.itemcounterview.IncDecView;
 
 import java.util.List;

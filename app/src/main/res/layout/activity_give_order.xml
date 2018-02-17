@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.aykut.getirandroid.GiveOrder">
+    tools:context="com.example.aykut.getirandroid.activities.GiveOrder">
 
     <RelativeLayout
         android:layout_width="match_parent"

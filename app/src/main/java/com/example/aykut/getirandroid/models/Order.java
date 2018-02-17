@@ -1,4 +1,4 @@
-package com.example.aykut.getirandroid;
+package com.example.aykut.getirandroid.models;
 
 import com.shalan.mohamed.itemcounterview.IncDecView;
 
