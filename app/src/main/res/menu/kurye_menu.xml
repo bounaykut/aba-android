@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/empty"
+        android:title="options"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_more">
+        <menu>
+            <item
+                android:id="@+id/action_add_favourite"
+                android:orderInCategory="100"
+                android:title="add to favourite" />
+
+            <item
+                android:id="@+id/contact_info"
+                android:orderInCategory="101"
+                android:title="COntact Info" />
+        </menu>
+    </item>
+</menu>

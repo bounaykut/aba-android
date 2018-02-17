@@ -1,4 +1,4 @@
-package com.example.android.myapplication;
+package com.example.aykut.getirandroid.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.PopupMenu;
@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.aykut.getirandroid.R;
+import com.example.aykut.getirandroid.models.kurye;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.android.myapplication;
+package com.example.aykut.getirandroid.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.aykut.getirandroid.R;
+import com.example.aykut.getirandroid.models.PrevOrders;
 
 import java.util.ArrayList;
 

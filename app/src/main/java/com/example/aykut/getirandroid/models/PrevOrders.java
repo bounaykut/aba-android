@@ -1,4 +1,4 @@
-package com.example.android.myapplication;
+package com.example.aykut.getirandroid.models;
 
 public class PrevOrders {
 

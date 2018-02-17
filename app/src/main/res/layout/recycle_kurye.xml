@@ -32,7 +32,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_alignParentEnd="true"
-                android:text="@string/make_order"
+                android:text="@string/giveOrder"
                 android:onClick="makeOrder"
                 android:layout_alignParentRight="true" />
     </RelativeLayout>
