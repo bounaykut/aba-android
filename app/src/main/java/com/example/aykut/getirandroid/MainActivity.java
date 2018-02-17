@@ -75,6 +75,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
+
         mMap.setOnMarkerClickListener(this);
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -85,9 +86,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.clear();
 
                 Marker m = mMap.addMarker(new MarkerOptions().position(point)
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_human_foreground))
-                        .snippet("Ben"));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_package))
+                        .title("Order Location")
+                        .snippet("order center point"));
                 markerInCircle.add(m);
+
+                drawCircle(point);
 
 
                 //post the clicked point to backend and get points around radius with traveller infos(id,name), when click on marker
@@ -101,6 +105,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map))
                             .snippet("Ali Armagan"));
                 }
+
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+                mMap.animateCamera( CameraUpdateFactory.zoomTo( 5.0f ) );
             }
         });
     }
@@ -115,5 +122,31 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         return false;
+    }
+
+
+    private void drawCircle(LatLng point){
+
+        // Instantiating CircleOptions to draw a circle around the marker
+        CircleOptions circleOptions = new CircleOptions();
+
+        // Specifying the center of the circle
+        circleOptions.center(point);
+
+        // Radius of the circle
+        circleOptions.radius(300000);
+
+        // Border color of the circle
+        circleOptions.strokeColor(Color.BLACK);
+
+        // Fill color of the circle
+        circleOptions.fillColor(0x500084d3);
+
+        // Border width of the circle
+        circleOptions.strokeWidth(2);
+
+        // Adding the circle to the GoogleMap
+        mMap.addCircle(circleOptions);
+
     }
 }

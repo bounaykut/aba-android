@@ -22,11 +22,9 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAGr8ZzCX9sf14_Z8XWK2JldUeWTPx8kGM"/>
+            android:value="AIzaSyAGr8ZzCX9sf14_Z8XWK2JldUeWTPx8kGM" />
 
+        <activity android:name=".GiveOrder"></activity>
     </application>
-
-
-
 
 </manifest>
