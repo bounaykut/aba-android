@@ -56,21 +56,22 @@
             android:layout_marginRight="10dp"
             android:layout_alignTop="@+id/fromTextView"
             android:layout_alignBottom="@+id/fromTextView"
-            android:ems="2"
+            android:ems="1"
             android:hint="@string/location"
             android:background="@layout/edit_text_border"
             android:inputType="textMultiLine" />
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
+        <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/searchBox"
             android:layout_alignStart="@+id/fromTextView"
             android:layout_alignEnd="@+id/searchBox"
-            android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            />
+            android:layout_marginBottom="10dp"
+            android:id="@+id/map"
+            class="com.google.android.gms.maps.SupportMapFragment" />
+
 
 
     </RelativeLayout>
