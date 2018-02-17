@@ -67,8 +67,8 @@
             android:id="@+id/addItemButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/itemList"
+            android:layout_centerHorizontal="true"
             android:layout_marginRight="30dp"
             android:layout_marginBottom="30dp"
             android:clickable="true"
@@ -78,12 +78,21 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/itemList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:layout_below="@id/kiloLimitTextView">
+
         </android.support.v7.widget.RecyclerView>
 
+        <Button
+            android:id="@+id/orderButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:text="@string/order" />
 
 
     </RelativeLayout>

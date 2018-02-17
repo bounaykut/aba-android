@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class GiveOrder extends Activity {
     TextView kiloLimit;
     RecyclerView itemRecycler;
     FloatingActionButton addItemButton;
+    Button orderButton;
 
     OrderAdapter orderAdapter;
     ArrayList<Order> orderList = new ArrayList<>();
@@ -41,8 +43,17 @@ public class GiveOrder extends Activity {
         orderAdapter = new OrderAdapter(orderList);
         itemRecycler.setAdapter(orderAdapter);
         itemRecycler.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+
         addItemButton = (FloatingActionButton) findViewById(R.id.addItemButton);
         addItemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        orderButton = (Button) findViewById(R.id.orderButton);
+        orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

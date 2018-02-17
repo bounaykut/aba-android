@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,6 +29,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     Button currentOrder;
     Button availableCourier;
     EditText searchBox;
+    ImageButton searchButton;
 
     private GoogleMap mMap;
     private ArrayList<Marker> markerInCircle = new ArrayList<>();
@@ -62,6 +64,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
         searchBox = (EditText) findViewById(R.id.searchBox);
+
+        searchButton = (ImageButton) findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
