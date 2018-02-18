@@ -38,12 +38,12 @@ public interface ApiInterface {
     @POST("couriers/availableByPoint")
     Call<List<Courier>> getCouriersAroundPoint(@Body CourierListRequestbyPoint courierListRequestbyPoint);
 
-    //order routes
-    @GET("orders/")
-    Call<List<Order>> getCurrentOrders();
+    //user routes
+    @GET("users/{id}/orders")
+    Call<List<Order>> getCurrentOrders(@Path("id") String id);
 
-    @POST("orders/createOrder")
-    Call<Order> createOrder(@Body Order order);
+    @POST("users/{id}/createOrder")
+    Call<Order> createOrder(@Path("id") String id, @Body Order order);
 
 
 }

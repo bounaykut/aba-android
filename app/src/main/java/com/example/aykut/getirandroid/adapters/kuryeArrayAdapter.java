@@ -38,15 +38,18 @@ public class kuryeArrayAdapter extends RecyclerView.Adapter<kuryeArrayAdapter.Vi
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(listKuryeLayout, parent, false);
         ViewHolder myViewHolder = new ViewHolder(view);
+
+        final TextView name = (TextView) view.findViewById(R.id.kurye_ad);
 
         Button make_order = (Button) view.findViewById(R.id.make_order);
         make_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(mContext, GiveOrder.class);
+                i.putExtra("travellerName",name.getText());
                 mContext.startActivity(i);
             }
         });
@@ -67,6 +70,7 @@ public class kuryeArrayAdapter extends RecyclerView.Adapter<kuryeArrayAdapter.Vi
                 showPopupMenu(item);
             }
         });
+
     }
 
     /**

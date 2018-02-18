@@ -28,7 +28,8 @@ import java.util.ArrayList;
 
 public class GiveOrder extends Activity {
 
-    int id;
+    String courierId;
+    String courierName = "";
 
     TextView name;
     TextView kiloLimit;
@@ -50,9 +51,11 @@ public class GiveOrder extends Activity {
         setContentView(R.layout.activity_give_order);
 
         Intent i = getIntent();
-        i.getIntExtra("travellerId",0);
+        courierId = i.getStringExtra("travellerId");
+        courierName = i.getStringExtra("travellerName");
 
         name = (TextView) findViewById(R.id.name);
+        name.setText(courierName);
 
         kiloLimit = (TextView) findViewById(R.id.kiloLimit);
 

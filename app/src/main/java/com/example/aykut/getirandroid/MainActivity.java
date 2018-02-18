@@ -1,5 +1,6 @@
 package com.example.aykut.getirandroid;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -30,13 +31,14 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
 
     Button currentOrder;
     Button availableCourier;
@@ -46,6 +48,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
 
     private ArrayList<Courier> courierList = new ArrayList<>();
+
+    private HashMap<Marker,String> markersInCircle = new HashMap<>();
 
     LatLng lastKnownPoint;
 
@@ -135,12 +139,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 //draw blue circle centered at the requested point
                 LatLng point = new LatLng(response.body().get(courierResponse.size()-1).getLocation().getLat(),response.body().get(courierResponse.size()-1).getLocation().getLng());
                 drawCircle(point);
+                mMap.addMarker(new MarkerOptions().position(point)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_package))
+                        .title("Order Location")
+                        .snippet("order center point"));
 
                 //add markers to points around the center point
                 for (Courier courier : courierList) {
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(courier.getLocation().getLat(),courier.getLocation().getLng()))
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(courier.getLocation().getLat(),courier.getLocation().getLng()))
                             .title(courier.getName())
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map)));
+                    markersInCircle.put(marker,courier.getId());
                 }
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
@@ -179,9 +188,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
                     //add markers to points around the center point
                     for (Courier courier : courierList) {
-                        mMap.addMarker(new MarkerOptions().position(new LatLng(courier.getLocation().getLat(),courier.getLocation().getLng()))
+                        Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(courier.getLocation().getLat(),courier.getLocation().getLng()))
                                 .title(courier.getName())
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map)));
+                        markersInCircle.put(marker,courier.getId());
                     }
                 }
 
@@ -217,8 +227,24 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 .title("Me"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(lastKnownPoint));
 
-        //set marker click listener
-        mMap.setOnMarkerClickListener(this);
+
+        //set title click listener
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+            @Override
+            public void onInfoWindowClick(Marker arg0) {
+
+                //go to courier's order page
+                if(!arg0.getTitle().equals("Me") && !arg0.getTitle().equals("Order Location")){
+                    Intent intent = new Intent(MainActivity.this, GiveOrder.class);
+                    //create mymarker class extending marker and add id field to it;
+                    intent.putExtra("travellerId",markersInCircle.get(arg0));
+                    intent.putExtra("travellerName", arg0.getTitle());
+                    startActivity(intent);
+                }
+
+            }
+        });
 
         //set map click listener
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -247,18 +273,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    @Override
-    public boolean onMarkerClick(Marker marker) {
 
-        //go to courier's order page
-        Intent intent = new Intent(this, GiveOrder.class);
-        //create mymarker class extending marker and add id field to it
-        intent.putExtra("travellerId", 1);
-        startActivity(intent);
-
-
-        return false;
-    }
 
 
     private void drawCircle(LatLng point) {
