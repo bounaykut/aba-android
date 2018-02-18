@@ -17,10 +17,16 @@ public class Item {
     @SerializedName("weight")
     private Double weight;
 
-    public Item(String itemName, Double price, Double weight) {
+    @SerializedName("count")
+    private Integer count;
+
+
+
+    public Item(String itemName, Double price, Double weight,Integer count) {
         this.itemName = itemName;
         this.price = price;
         this.weight = weight;
+        this.count = count;
     }
 
     public String getItemName() {
@@ -45,5 +51,13 @@ public class Item {
 
     public void setWeight(Double weight) {
         this.weight = weight;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 }

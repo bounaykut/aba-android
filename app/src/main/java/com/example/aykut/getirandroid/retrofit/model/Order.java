@@ -9,33 +9,33 @@ import com.google.gson.annotations.SerializedName;
 public class Order {
 
     @SerializedName("courier")
-    private Courier courier;
+    private String courier;
 
     @SerializedName("customer")
-    private User customer;
+    private String customer;
 
     @SerializedName("item")
     private Item item;
 
-    public Order(Courier courier, User customer, Item item) {
+    public Order(String courier, String customer, Item item) {
         this.courier = courier;
         this.customer = customer;
         this.item = item;
     }
 
-    public Courier getCourier() {
+    public String getCourier() {
         return courier;
     }
 
-    public void setCourier(Courier courier) {
+    public void setCourier(String courier) {
         this.courier = courier;
     }
 
-    public User getCustomer() {
+    public String getCustomer() {
         return customer;
     }
 
-    public void setCustomer(User customer) {
+    public void setCustomer(String customer) {
         this.customer = customer;
     }
 
