@@ -1,16 +1,12 @@
 package com.example.aykut.getirandroid.retrofit.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-/**
- * Created by aykut on 17.02.2018.
- */
 
 public class Location {
 
     @SerializedName("lat")
     private Double lat;
-
     @SerializedName("lng")
     private Double lng;
 
@@ -23,7 +19,7 @@ public class Location {
         return lat;
     }
 
-    public void setLat(Double lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
@@ -31,7 +27,8 @@ public class Location {
         return lng;
     }
 
-    public void setLng(Double lng) {
+    public void setLng(double lng) {
         this.lng = lng;
     }
+
 }

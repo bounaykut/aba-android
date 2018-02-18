@@ -6,10 +6,13 @@ package com.example.aykut.getirandroid.retrofit.rest;
 
 
 
-import android.location.Location;
 
 import com.example.aykut.getirandroid.retrofit.model.Courier;
+import com.example.aykut.getirandroid.retrofit.requestbody.CourierListRequestbyAddress;
+import com.example.aykut.getirandroid.retrofit.requestbody.CourierListRequestbyPoint;
+import com.example.aykut.getirandroid.retrofit.responsebody.CourierListResponse;
 import com.example.aykut.getirandroid.retrofit.model.Order;
+import com.example.aykut.getirandroid.retrofit.responsebody.CourierResponse;
 
 import java.util.List;
 
@@ -24,13 +27,16 @@ public interface ApiInterface {
 
     //courier routes
     @GET("couriers/")
-    Call<List<Courier>> getAllCouriersSortedByDate();
+    Call<CourierListResponse> getAllCouriersSortedByDate();
 
-    @POST("couriers/{id}")
-    Call<Courier> getMovieDetails(@Path("id") int id);
+    @GET("couriers/{id}")
+    Call<CourierResponse> getCourier(@Path("id") String id);
 
     @POST("couriers/availableByLocation")
-    Call<List<Courier>> getCouriersAroundPoint(@Path("id") int id, @Body Location location);
+    Call<List<Courier>> getCouriersAroundLocation(@Body CourierListRequestbyAddress courierListRequestbyAddress);
+
+    @POST("couriers/availableByPoint")
+    Call<List<Courier>> getCouriersAroundPoint(@Body CourierListRequestbyPoint courierListRequestbyPoint);
 
     //order routes
     @GET("orders/")

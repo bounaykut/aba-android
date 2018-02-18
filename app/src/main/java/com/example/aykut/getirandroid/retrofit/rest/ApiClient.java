@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    public static final String BASE_URL = "";
+    public static final String BASE_URL = "https://aba-iste.herokuapp.com/";
     private static Retrofit retrofit = null;
 
 

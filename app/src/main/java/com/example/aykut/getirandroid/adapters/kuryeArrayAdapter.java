@@ -1,6 +1,7 @@
 package com.example.aykut.getirandroid.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aykut.getirandroid.R;
+import com.example.aykut.getirandroid.activities.GiveOrder;
 import com.example.aykut.getirandroid.models.kurye;
 
 import java.util.ArrayList;
@@ -39,8 +41,20 @@ public class kuryeArrayAdapter extends RecyclerView.Adapter<kuryeArrayAdapter.Vi
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(listKuryeLayout, parent, false);
         ViewHolder myViewHolder = new ViewHolder(view);
+
+        Button make_order = (Button) view.findViewById(R.id.make_order);
+        make_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(mContext, GiveOrder.class);
+                mContext.startActivity(i);
+            }
+        });
+
+
         return myViewHolder;
     }
+
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int listPosition) {

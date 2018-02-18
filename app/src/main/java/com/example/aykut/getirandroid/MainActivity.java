@@ -1,18 +1,9 @@
 package com.example.aykut.getirandroid;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.Movie;
-import android.location.Location;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,10 +14,11 @@ import com.example.aykut.getirandroid.activities.AvailableCourier;
 import com.example.aykut.getirandroid.activities.GiveOrder;
 import com.example.aykut.getirandroid.activities.GoMyOrdersActivity;
 import com.example.aykut.getirandroid.retrofit.model.Courier;
+import com.example.aykut.getirandroid.retrofit.model.Location;
+import com.example.aykut.getirandroid.retrofit.requestbody.CourierListRequestbyAddress;
+import com.example.aykut.getirandroid.retrofit.requestbody.CourierListRequestbyPoint;
 import com.example.aykut.getirandroid.retrofit.rest.ApiClient;
 import com.example.aykut.getirandroid.retrofit.rest.ApiInterface;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,7 +28,6 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,10 +44,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     ImageButton searchButton;
 
     private GoogleMap mMap;
-    private ArrayList<Marker> markerInCircle = new ArrayList<>();
+
+    private ArrayList<Courier> courierList = new ArrayList<>();
 
     LatLng lastKnownPoint;
 
+    ApiInterface apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +80,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                findPointsAroundbyLocation();
             }
         });
 
@@ -97,14 +90,62 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<Courier>> call = apiService.getAllCouriersSortedByDate();
+        apiService = ApiClient.getClient().create(ApiInterface.class);
 
+        /*Call<CourierResponse> call = apiService.getCourier("5a889a900cd7e400148c7522");
+
+        call.enqueue(new Callback<CourierResponse>() {
+            @Override
+            public void onResponse(Call<CourierResponse>call, Response<CourierResponse> response) {
+                CourierResponse courierResponse = response.body();
+                Log.d("aykut", "Courier received: " + response.body().getCourier().getName());
+            }
+
+            @Override
+            public void onFailure(Call<CourierResponse>call, Throwable t) {
+                // Log error here since request failed
+                Log.e("aykut", t.toString());
+            }
+        });*/
+
+
+
+    }
+
+
+    public void findPointsAroundbyLocation(){
+
+        Call<List<Courier>> call = apiService.getCouriersAroundLocation(new CourierListRequestbyAddress(searchBox.getText().toString()));
         call.enqueue(new Callback<List<Courier>>() {
             @Override
             public void onResponse(Call<List<Courier>>call, Response<List<Courier>> response) {
-                List<Courier> couriers = response.body();
-                Log.d("aykut", "Number of couriers received: " + couriers.size());
+                List<Courier> courierResponse = response.body();
+
+                if(response.body() != null){
+                    mMap.clear();
+                    courierList.clear();
+
+                    for(int i=1;i<response.body().size();i++){
+                        courierList.add(response.body().get(i));
+                    }
+
+
+                }
+
+                //draw blue circle centered at the requested point
+                LatLng point = new LatLng(response.body().get(courierResponse.size()-1).getLocation().getLat(),response.body().get(courierResponse.size()-1).getLocation().getLng());
+                drawCircle(point);
+
+                //add markers to points around the center point
+                for (Courier courier : courierList) {
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(courier.getLocation().getLat(),courier.getLocation().getLng()))
+                            .title(courier.getName())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map)));
+                }
+
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(5.0f));
+
             }
 
             @Override
@@ -113,6 +154,46 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.e("aykut", t.toString());
             }
         });
+
+
+
+    }
+
+
+    public void findPointsAroundbyPoint(final Location location){
+
+        Call<List<Courier>> call = apiService.getCouriersAroundPoint(new CourierListRequestbyPoint(location));
+        call.enqueue(new Callback<List<Courier>>() {
+            @Override
+            public void onResponse(Call<List<Courier>>call, Response<List<Courier>> response) {
+                List<Courier> courierResponse = response.body();
+
+                if(response.body() != null){
+                    for(Courier courier:response.body()){
+                        Log.d("aykut", "size of couriers received: " + response.body().size());
+                        courierList.add(courier);
+                    }
+                    //draw blue circle centered at the clicked point
+                    drawCircle(new LatLng(location.getLat(),location.getLng()));
+
+
+                    //add markers to points around the center point
+                    for (Courier courier : courierList) {
+                        mMap.addMarker(new MarkerOptions().position(new LatLng(courier.getLocation().getLat(),courier.getLocation().getLng()))
+                                .title(courier.getName())
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map)));
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Courier>>call, Throwable t) {
+                // Log error here since request failed
+                Log.e("aykut", t.toString());
+            }
+        });
+
 
 
     }
@@ -147,32 +228,19 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
                 //clear map first
                 mMap.clear();
+                courierList.clear();
 
                 //add marker to clicked center position
                 Marker m = mMap.addMarker(new MarkerOptions().position(point)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_package))
                         .title("Order Location")
                         .snippet("order center point"));
-                markerInCircle.add(m);
 
                 //move camera to clicked point
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(5.0f));
 
-                //draw blue circle centered at the clicked point
-                drawCircle(point);
-
-
-                //add markers to points around the center point
-                ArrayList<LatLng> pointsInCircle = new ArrayList<>();
-                pointsInCircle.add(new LatLng(-33, 152));//test data
-                pointsInCircle.add(new LatLng(-32, 152));
-                pointsInCircle.add(new LatLng(-33, 150));
-                for (LatLng latlng : pointsInCircle) {
-                    mMap.addMarker(new MarkerOptions().position(latlng)
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map))
-                            .snippet("Ali Armagan"));
-                }
+                findPointsAroundbyPoint(new Location(point.latitude,point.longitude));
 
 
             }
